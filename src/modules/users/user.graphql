@@ -5,3 +5,19 @@ type User {
     password: String
     email: String!
 }
+
+input UserInput {
+    firstName: String!
+    lastName: String!
+    password: String!
+    email: String!
+}
+
+input Credentials {
+    email: String!
+    password: String!
+}
+
+type Jwt {
+    jwt: String!
+}

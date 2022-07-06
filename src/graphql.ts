@@ -7,6 +7,29 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export class ArtistInput {
+    firstName?: Nullable<string>;
+    secondName?: Nullable<string>;
+    middleName?: Nullable<string>;
+    birthDate?: Nullable<string>;
+    birthPlace?: Nullable<string>;
+    country?: Nullable<string>;
+    bands?: Nullable<string[]>;
+    instruments?: Nullable<Nullable<string>[]>;
+}
+
+export class UserInput {
+    firstName: string;
+    lastName: string;
+    password: string;
+    email: string;
+}
+
+export class Credentials {
+    email: string;
+    password: string;
+}
+
 export class Author {
     id: number;
     firstName?: Nullable<string>;
@@ -24,6 +47,18 @@ export abstract class IQuery {
     abstract author(id: number): Nullable<Author> | Promise<Nullable<Author>>;
 
     abstract artist(id: string): Nullable<Artist> | Promise<Nullable<Artist>>;
+
+    abstract artists(): Nullable<Nullable<Artist>[]> | Promise<Nullable<Nullable<Artist>[]>>;
+
+    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract jwt(creds: Credentials): Nullable<Jwt> | Promise<Nullable<Jwt>>;
+}
+
+export abstract class IMutation {
+    abstract createArtist(artist?: Nullable<ArtistInput>): Nullable<Artist> | Promise<Nullable<Artist>>;
+
+    abstract register(user?: Nullable<UserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export class Album {
@@ -59,9 +94,12 @@ export class Band {
 }
 
 export class Member {
-    artist?: Nullable<string>;
+    id: string;
+    firstName?: Nullable<string>;
+    secondName?: Nullable<string>;
+    middleName?: Nullable<string>;
     instrument?: Nullable<string>;
-    years?: Nullable<string>;
+    years?: Nullable<Nullable<string>[]>;
 }
 
 export class Favourites {
@@ -98,6 +136,10 @@ export class User {
     secondName?: Nullable<string>;
     password?: Nullable<string>;
     email: string;
+}
+
+export class Jwt {
+    jwt: string;
 }
 
 type Nullable<T> = T | null;

@@ -14,4 +14,12 @@ type Post {
 type Query {
   author(id: Int!): Author
   artist(id: String!): Artist
+  artists: [Artist]
+  user(id: String!): User
+  jwt(creds: Credentials!): Jwt
+}
+
+type Mutation {
+  createArtist(artist: ArtistInput): Artist
+  register(user: UserInput): User
 }
