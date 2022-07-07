@@ -1,8 +1,7 @@
 import {Args, Context, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
 import {ArtistsService} from "./artists.service";
 import {BandsService} from "../bands/bands.service";
-import {Artist, ArtistInput, Post} from "../../graphql";
-import {Headers} from '@nestjs/common';
+import {Artist, ArtistInput, DeleteResponse, Post} from "../../graphql";
 
 @Resolver('Artist')
 export class ArtistsResolver {
@@ -17,8 +16,11 @@ export class ArtistsResolver {
   }
 
   @Query('artists')
-  async artists() {
-    return this.artistsService.getAll();
+  async artists(
+    @Args('limit') limit: number = 5,
+    @Args('offset') offset: number = 0
+  ) {
+    return this.artistsService.getAll(limit, offset);
   }
 
   @ResolveField()
@@ -29,9 +31,34 @@ export class ArtistsResolver {
   }
 
   @Mutation('createArtist')
-  async createArtist(@Args('artist') artist: ArtistInput,  @Context('req') req,): Promise<Artist> {
-    const authToken = req.headers.authorization; //Bearer ....
-    const response = await this.artistsService.createArtist(artist, authToken);
+  async createArtist(
+    @Args('artist') artist: ArtistInput,
+    @Context('req') req,
+    ): Promise<Artist> {
+      const authToken = req.headers.authorization; //Bearer ....
+      const response = await this.artistsService.createArtist(artist, authToken);
+      return response;
+  }
+
+  @Mutation('updateArtist')
+  async updateArtist(
+    @Args('id') id: string,
+    @Args('artist') artist: ArtistInput,
+    @Context('req') req,
+    ): Promise<Artist> {
+      const authToken = req.headers.authorization;
+      const response = await this.artistsService.updateArtist(id, artist, authToken);
+      return response;
+  }
+
+  @Mutation('deleteArtist')
+  async deleteArtist(
+    @Args('id') id: string,
+    @Context('req') req,
+  ): Promise<DeleteResponse> {
+    const authToken = req.headers.authorization;
+    const response = await this.artistsService.deleteArtist(id, authToken);
+    console.log(response);
     return response;
   }
 }

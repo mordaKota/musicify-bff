@@ -11,15 +11,22 @@ type Post {
   votes: Int
 }
 
+type DeleteResponse {
+  acknowledged: Boolean
+  deletedCount: Int
+}
+
 type Query {
   author(id: Int!): Author
-  artist(id: String!): Artist
-  artists: [Artist]
-  user(id: String!): User
+  artist(id: ID!): Artist
+  artists(limit: Int! offset: Int!): [Artist]
+  user(id: ID!): User
   jwt(creds: Credentials!): Jwt
 }
 
 type Mutation {
   createArtist(artist: ArtistInput): Artist
+  updateArtist(id: ID! artist: ArtistInput): Artist
+  deleteArtist(id: ID!): DeleteResponse
   register(user: UserInput): User
 }

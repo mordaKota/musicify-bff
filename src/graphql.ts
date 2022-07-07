@@ -43,12 +43,17 @@ export class Post {
     votes?: Nullable<number>;
 }
 
+export class DeleteResponse {
+    acknowledged?: Nullable<boolean>;
+    deletedCount?: Nullable<number>;
+}
+
 export abstract class IQuery {
     abstract author(id: number): Nullable<Author> | Promise<Nullable<Author>>;
 
     abstract artist(id: string): Nullable<Artist> | Promise<Nullable<Artist>>;
 
-    abstract artists(): Nullable<Nullable<Artist>[]> | Promise<Nullable<Nullable<Artist>[]>>;
+    abstract artists(limit: number, offset: number): Nullable<Nullable<Artist>[]> | Promise<Nullable<Nullable<Artist>[]>>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
 
@@ -57,6 +62,10 @@ export abstract class IQuery {
 
 export abstract class IMutation {
     abstract createArtist(artist?: Nullable<ArtistInput>): Nullable<Artist> | Promise<Nullable<Artist>>;
+
+    abstract updateArtist(id: string, artist?: Nullable<ArtistInput>): Nullable<Artist> | Promise<Nullable<Artist>>;
+
+    abstract deleteArtist(id: string): Nullable<DeleteResponse> | Promise<Nullable<DeleteResponse>>;
 
     abstract register(user?: Nullable<UserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
