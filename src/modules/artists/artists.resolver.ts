@@ -4,6 +4,7 @@ import {BandsService} from "../bands/bands.service";
 import {Artist, ArtistInput, DeleteResponse, Post} from "../../graphql";
 
 @Resolver('Artist')
+
 export class ArtistsResolver {
   constructor(
     private artistsService: ArtistsService,

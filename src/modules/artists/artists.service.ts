@@ -10,6 +10,7 @@ export class ArtistsService {
     try {
       const response = await this.httpService.axiosRef.get(`http://localhost:3002/v1/artists/${id}`);
       data = response.data;
+      data.id = data._id;
     } catch (e) {
       console.error({ e })
       throw e;
@@ -25,6 +26,7 @@ export class ArtistsService {
         { params: { limit: limit, offset: offset }}
       )
       data = response.data;
+      data.items.forEach(item => item.id = item._id);
     } catch (e) {
       console.error({ e })
       throw e;
