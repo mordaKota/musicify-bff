@@ -37,6 +37,7 @@ export class ArtistsService {
   async createArtist(artist, authToken) {
     let data;
     try {
+      artist.bandsIds = artist.bands;
       const response = await this.httpService.axiosRef.post(
         'http://localhost:3002/v1/artists/',
         artist,
@@ -54,6 +55,7 @@ export class ArtistsService {
   async updateArtist(id, artist, authToken) {
     let data;
     try {
+      artist.bandsIds = artist.bands;
       const response = await this.httpService.axiosRef.put(
         `http://localhost:3002/v1/artists/${id}`,
         artist,

@@ -46,6 +46,7 @@ export class BandsService {
   async createBand(band, authToken) {
     let data;
     try {
+      band.genresIds = band.genres;
       const response = await this.httpService.axiosRef.post(
         'http://localhost:3003/v1/bands/',
         band,
@@ -63,6 +64,7 @@ export class BandsService {
   async updateBand(id, band, authToken) {
     let data;
     try {
+      band.genresIds = band.genres;
       const response = await this.httpService.axiosRef.put(
         `http://localhost:3003/v1/bands/${id}`,
         band,

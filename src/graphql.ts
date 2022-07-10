@@ -7,6 +7,16 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export class AlbumInput {
+    name?: Nullable<string>;
+    released?: Nullable<number>;
+    artists?: Nullable<string[]>;
+    bands?: Nullable<string[]>;
+    tracks?: Nullable<string[]>;
+    genres?: Nullable<string[]>;
+    image?: Nullable<string>;
+}
+
 export class ArtistInput {
     firstName?: Nullable<string>;
     secondName?: Nullable<string>;
@@ -61,27 +71,12 @@ export class Credentials {
     password: string;
 }
 
-export class Author {
-    id: number;
-    firstName?: Nullable<string>;
-    lastName?: Nullable<string>;
-    posts?: Nullable<Nullable<Post>[]>;
-}
-
-export class Post {
-    id: number;
-    title: string;
-    votes?: Nullable<number>;
-}
-
 export class DeleteResponse {
     acknowledged?: Nullable<boolean>;
     deletedCount?: Nullable<number>;
 }
 
 export abstract class IQuery {
-    abstract author(id: number): Nullable<Author> | Promise<Nullable<Author>>;
-
     abstract artist(id: string): Nullable<Artist> | Promise<Nullable<Artist>>;
 
     abstract artists(limit: number, offset: number): Nullable<Nullable<Artist>[]> | Promise<Nullable<Nullable<Artist>[]>>;
@@ -101,6 +96,10 @@ export abstract class IQuery {
     abstract tracks(limit?: Nullable<number>, offset?: Nullable<number>): Nullable<Nullable<Track>[]> | Promise<Nullable<Nullable<Track>[]>>;
 
     abstract track(id: string): Nullable<Track> | Promise<Nullable<Track>>;
+
+    abstract albums(limit?: Nullable<number>, offset?: Nullable<number>): Nullable<Nullable<Album>[]> | Promise<Nullable<Nullable<Album>[]>>;
+
+    abstract album(id: string): Nullable<Album> | Promise<Nullable<Album>>;
 }
 
 export abstract class IMutation {
@@ -129,6 +128,12 @@ export abstract class IMutation {
     abstract updateTrack(id: string, track?: Nullable<TrackInput>): Nullable<Track> | Promise<Nullable<Track>>;
 
     abstract deleteTrack(id: string): Nullable<DeleteResponse> | Promise<Nullable<DeleteResponse>>;
+
+    abstract createAlbum(album?: Nullable<AlbumInput>): Nullable<Album> | Promise<Nullable<Album>>;
+
+    abstract updateAlbum(id: string, album?: Nullable<AlbumInput>): Nullable<Album> | Promise<Nullable<Album>>;
+
+    abstract deleteAlbum(id: string): Nullable<DeleteResponse> | Promise<Nullable<DeleteResponse>>;
 }
 
 export class Album {

@@ -1,4 +1,4 @@
-import {Args, Context, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
+import {Args, Context, Mutation, Query, Resolver} from '@nestjs/graphql';
 import {GenresService} from "./genres.service";
 import {DeleteResponse, Genre, GenreInput} from "../../graphql";
 
@@ -27,8 +27,7 @@ export class GenresResolver {
     @Context('req') req,
   ): Promise<Genre> {
     const authToken = req.headers.authorization; //Bearer ....
-    const response = await this.genresService.createGenre(genre, authToken);
-    return response;
+    return await this.genresService.createGenre(genre, authToken);
   }
 
   @Mutation('updateGenre')
@@ -38,8 +37,7 @@ export class GenresResolver {
     @Context('req') req,
   ): Promise<Genre> {
     const authToken = req.headers.authorization;
-    const response = await this.genresService.updateGenre(id, genre, authToken);
-    return response;
+    return await this.genresService.updateGenre(id, genre, authToken);
   }
 
   @Mutation('deleteGenre')
@@ -48,9 +46,7 @@ export class GenresResolver {
     @Context('req') req,
   ): Promise<DeleteResponse> {
     const authToken = req.headers.authorization;
-    const response = await this.genresService.deleteGenre(id, authToken);
-    console.log(response);
-    return response;
+    return await this.genresService.deleteGenre(id, authToken);
   }
 
 }

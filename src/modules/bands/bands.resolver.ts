@@ -46,8 +46,7 @@ export class BandsResolver {
   async genres(@Parent() band) {
     return Promise.all(
       (band.genresIds || []).map(async (genre) => {
-        const response = await this.genresService.findOneById(genre);
-        return response;
+        return await this.genresService.findOneById(genre);
       })
     )
   }
@@ -58,8 +57,7 @@ export class BandsResolver {
     @Context('req') req,
   ): Promise<Band> {
     const authToken = req.headers.authorization;
-    const response = await this.bandsService.createBand(band, authToken);
-    return response;
+    return await this.bandsService.createBand(band, authToken);
   }
 
   @Mutation('updateBand')
@@ -69,8 +67,7 @@ export class BandsResolver {
     @Context('req') req,
   ): Promise<Band> {
     const authToken = req.headers.authorization;
-    const response = await this.bandsService.updateBand(id, band, authToken);
-    return response;
+    return await this.bandsService.updateBand(id, band, authToken);
   }
 
   @Mutation('deleteBand')
@@ -79,8 +76,6 @@ export class BandsResolver {
     @Context('req') req,
   ): Promise<DeleteResponse> {
     const authToken = req.headers.authorization;
-    const response = await this.bandsService.deleteBand(id, authToken);
-    console.log(response);
-    return response;
+    return await this.bandsService.deleteBand(id, authToken);
   }
 }

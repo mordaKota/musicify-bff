@@ -1,7 +1,7 @@
 import {Args, Context, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
 import {ArtistsService} from "./artists.service";
 import {BandsService} from "../bands/bands.service";
-import {Artist, ArtistInput, DeleteResponse, Post} from "../../graphql";
+import {Artist, ArtistInput, DeleteResponse} from "../../graphql";
 
 @Resolver('Artist')
 
@@ -26,9 +26,12 @@ export class ArtistsResolver {
 
   @ResolveField()
   async bands(@Parent() artist) {
-    const bands = await this.bandsService.findByNames(artist.bands);
-    //console.log(require('util').inspect(bands, false, null, true))
-    return bands;
+   // const bands = await this.bandsService.findByNames(artist.bands);
+    return Promise.all(
+      (artist.bandsIds || []).map(async (band) => {
+        return await this.bandsService.findOneById(band);
+      })
+    )
   }
 
   @Mutation('createArtist')
@@ -37,8 +40,7 @@ export class ArtistsResolver {
     @Context('req') req,
     ): Promise<Artist> {
       const authToken = req.headers.authorization; //Bearer ....
-      const response = await this.artistsService.createArtist(artist, authToken);
-      return response;
+      return await this.artistsService.createArtist(artist, authToken);
   }
 
   @Mutation('updateArtist')
@@ -48,8 +50,7 @@ export class ArtistsResolver {
     @Context('req') req,
     ): Promise<Artist> {
       const authToken = req.headers.authorization;
-      const response = await this.artistsService.updateArtist(id, artist, authToken);
-      return response;
+      return await this.artistsService.updateArtist(id, artist, authToken);
   }
 
   @Mutation('deleteArtist')
@@ -58,8 +59,6 @@ export class ArtistsResolver {
     @Context('req') req,
   ): Promise<DeleteResponse> {
     const authToken = req.headers.authorization;
-    const response = await this.artistsService.deleteArtist(id, authToken);
-    console.log(response);
-    return response;
+    return await this.artistsService.deleteArtist(id, authToken);
   }
 }

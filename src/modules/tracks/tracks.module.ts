@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { TracksResolver } from './tracks.resolver';
 import {HttpModule} from "@nestjs/axios";
@@ -8,7 +8,7 @@ import {ArtistsModule} from "../artists/artists.module";
 import {AlbumsModule} from "../albums/albums.module";
 
 @Module({
-  imports: [HttpModule, BandsModule, GenresModule, ArtistsModule, AlbumsModule],
+  imports: [HttpModule, BandsModule, GenresModule, ArtistsModule, forwardRef(() => AlbumsModule)],
   providers: [TracksService, TracksResolver],
   exports: [TracksService]
 })

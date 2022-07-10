@@ -8,19 +8,16 @@ export class UsersResolver {
 
   @Query('user')
   async user(@Args('id') id: string): Promise<User> {
-    const response = this.usersService.getOneById(id);
-    return response;
+    return this.usersService.getOneById(id);
   }
 
   @Mutation('register')
   async createUser(@Args('user') user: UserInput): Promise<User> {
-    const response = await this.usersService.register(user);
-    return response;
+    return await this.usersService.register(user);
   }
 
   @Query('jwt')
   async getJwtToken(@Args('creds') creds: Credentials): Promise<Jwt> {
-    const response = await this.usersService.getJwtToken(creds);
-    return response;
+    return await this.usersService.getJwtToken(creds);
   }
 }

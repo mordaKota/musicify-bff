@@ -1,5 +1,4 @@
 import {Args, Context, Mutation, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
-//import {Artist, ArtistInput, DeleteResponse, Track, TrackInput} from "../../graphql";
 import {TracksService} from "./tracks.service";
 import {BandsService} from "../bands/bands.service";
 import {GenresService} from "../genres/genres.service";
@@ -19,7 +18,6 @@ export class TracksResolver {
 
   @Query('track')
   async track(@Args('id') id: string) {
-    console.log ( {key: await this.tracksService.findOneById(id)});
     return this.tracksService.findOneById(id);
   }
 
@@ -33,12 +31,9 @@ export class TracksResolver {
 
   @ResolveField()
   async bands(@Parent() track) {
-    console.log({ track });
     return Promise.all(
       (track.bandsIds || []).map(async (band) => {
-        console.log(track);
-        const response = await this.bandService.findOneById(band)
-        return response;
+        return await this.bandService.findOneById(band);
       })
     )
   }
@@ -47,28 +42,21 @@ export class TracksResolver {
   async genres(@Parent() track) {
     return Promise.all(
       (track.genresIds || []).map(async (genre) => {
-        const response = await this.genresService.findOneById(genre);
-        return response;
+        return await this.genresService.findOneById(genre);
       })
     )
   }
 
-  // @ResolveField()
-  // async albums(@Parent() track) {
-  //   return Promise.all(
-  //     (track.albums || []).map(async (album) => {
-  //       const response = await this.albumService.findOneById(album)
-  //       return response;
-  //     })
-  //   )
-  // }
+  @ResolveField()
+  async album(@Parent() track) {
+    return await this.albumService.findOneById(track.album);
+  }
 
   @ResolveField()
   async artists(@Parent() track) {
     return Promise.all(
       (track.artistsIds || []).map(async (artist) => {
-        const response = await this.artistService.findOneById(artist)
-        return response;
+        return await this.artistService.findOneById(artist);
       })
     )
   }
@@ -79,8 +67,7 @@ export class TracksResolver {
     @Context('req') req,
   ): Promise<Track> {
     const authToken = req.headers.authorization;
-    const response = await this.tracksService.createTrack(track, authToken);
-    return response;
+    return await this.tracksService.createTrack(track, authToken);
   }
 
   @Mutation('updateTrack')
@@ -90,8 +77,7 @@ export class TracksResolver {
     @Context('req') req,
   ): Promise<Track> {
     const authToken = req.headers.authorization;
-    const response = await this.tracksService.updateArtist(id, track, authToken);
-    return response;
+    return await this.tracksService.updateTrack(id, track, authToken);
   }
 
   @Mutation('deleteTrack')
@@ -100,8 +86,6 @@ export class TracksResolver {
     @Context('req') req,
   ): Promise<DeleteResponse> {
     const authToken = req.headers.authorization;
-    const response = await this.tracksService.deleteArtist(id, authToken);
-    console.log(response);
-    return response;
+    return await this.tracksService.deleteTrack(id, authToken);
   }
 }

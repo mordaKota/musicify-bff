@@ -37,6 +37,10 @@ export class TracksService {
   async createTrack(track, authToken) {
     let data;
     try {
+      track.artistsIds = track.artists;
+      track.bandsIds = track.bands;
+      track.genresIds = track.genres;
+      track.albumId = track.album;
       const response = await this.httpService.axiosRef.post(
         'http://localhost:3006/v1/tracks/',
         track,
@@ -51,16 +55,19 @@ export class TracksService {
     return data;
   }
 
-  async updateArtist(id, track, authToken) {
+  async updateTrack(id, track, authToken) {
     let data;
     try {
+      track.artistsIds = track.artists;
+      track.bandsIds = track.bands;
+      track.genresIds = track.genres;
+      track.albumId = track.album;
       const response = await this.httpService.axiosRef.put(
         `http://localhost:3006/v1/tracks/${id}`,
         track,
         { headers: { 'Authorization': authToken } }
       );
       data = response.data;
-      console.log(response);
       data.id = data._id;
     } catch (e) {
       console.error({ e })
@@ -69,7 +76,7 @@ export class TracksService {
     return data;
   }
 
-  async deleteArtist(id, authToken) {
+  async deleteTrack(id, authToken) {
     let data;
     try {
       const response = await this.httpService.axiosRef.delete(

@@ -23,7 +23,6 @@ export class UsersService {
     let data;
     try {
       const response = await this.httpService.axiosRef.get(`http://localhost:3004/v1/users/${id}`);
-      console.log(response);
       data = response.data;
       data.id = data._id;
     } catch (e) {

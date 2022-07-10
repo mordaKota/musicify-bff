@@ -8,3 +8,13 @@ type Album {
     genres: [Genre]
     image: String
 }
+
+input AlbumInput {
+    name: String
+    released: Int
+    artists: [ID!]
+    bands: [ID!]
+    tracks: [ID!]
+    genres: [ID!]
+    image: String
+}
