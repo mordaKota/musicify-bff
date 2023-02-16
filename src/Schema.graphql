@@ -1,0 +1,38 @@
+type DeleteResponse {
+  acknowledged: Boolean
+  deletedCount: Int
+}
+
+type Query {
+  artist(id: ID!): Artist
+  artists(limit: Int! offset: Int!): [Artist]
+  user(id: ID!): User
+  jwt(creds: Credentials!): Jwt
+  band(id: ID!): Band
+  bands(limit: Int, offset: Int): [Band]
+  genre(id: ID!): Genre
+  genres(limit: Int, offset: Int): [Genre]
+  tracks(limit: Int, offset: Int): [Track]
+  track(id: ID!): Track
+  albums(limit: Int, offset: Int): [Album]
+  album(id: ID!): Album
+}
+
+type Mutation {
+  createArtist(artist: ArtistInput): Artist
+  updateArtist(id: ID! artist: ArtistInput): Artist
+  deleteArtist(id: ID!): DeleteResponse
+  register(user: UserInput): User
+  createBand(band: BandInput): Band
+  updateBand(id: ID!, band: BandInput): Band
+  deleteBand(id: ID!): DeleteResponse
+  createGenre(genre: GenreInput): Genre
+  updateGenre(id: ID!, genre: GenreInput): Genre
+  deleteGenre(id: ID!): DeleteResponse
+  createTrack(track: TrackInput): Track
+  updateTrack(id: ID!, track: TrackInput): Track
+  deleteTrack(id: ID!): DeleteResponse
+  createAlbum(album: AlbumInput): Album
+  updateAlbum(id: ID!, album: AlbumInput): Album
+  deleteAlbum(id: ID!): DeleteResponse
+}
